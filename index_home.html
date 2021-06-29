@@ -1,0 +1,153 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="images/icon.png">
+    <title>faddaiMotors</title>
+    <link rel="stylesheet" href="styleSheet.css">
+    <link rel="stylesheet" href="all.min.css">
+</head>
+<body>
+    <header >
+        <div class="Navigation">
+        <h1 class="logo-text"><span>faddai</span>Motors</h1>
+        <nav>
+            <ul class="nav_links">
+                <li><a href="#">HOME</a></li>
+                <li><a href="inventory.html">INVENTORY</a></li>
+                <li><a href="autoparts.html">AUTO PARTS</a></li>
+            </ul>
+        </nav>
+        <a class="cta" href="contact.html"><button>contact</button></a>
+        </div>
+    </header>
+    <div class="slides" style="min-width:95%">
+            <img class="mySlides" src="images/car3.jpg" style="width:100%" height="85%">
+            <img class="mySlides" src="images/car5.jpg" style="width:100%" height="85%">
+            <img class="mySlides" src="images/car4.jpg" style="width:100%" height="85%">
+     </div>
+    <br>
+    <div class="clearfix"></div>
+        <div class="container">
+                <div class="responsive">
+                <div class="gallery">
+                    <img src="images/Elantra.jpg" alt="Elantra" width="600" height="400">
+                    <div class="desc">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                        A necessitatibus sint vitae, suscipit officiis esse  
+                        veniam id quam eligendi ipsam culpa enim cupiditate 
+                        expedita error! <br>
+                        <a class="btn" href="inventory.html"><button>Read More</button></a>
+                    </div>
+                </div>
+                </div>
+                    
+                    
+                <div class="responsive">
+                <div class="gallery">
+                    <img src="images/BMWinS.jpg" alt="hyundaiElantra" width="600" height="400">
+                    <div class="desc">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            A necessitatibus sint vitae, suscipit officiis esse  
+                            veniam id quam eligendi ipsam culpa enim cupiditate 
+                            expedita error! <br>
+                            <a class="btn" href="Inventory.html"><button>Read More</button></a>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="responsive">
+                <div class="gallery">
+                    <img src="images/newKiaSportage.jpg" alt="kiaSportage" width="600" height="400">
+                    <div class="desc">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            A necessitatibus sint vitae, suscipit officiis esse  
+                            veniam id quam eligendi ipsam culpa enim cupiditate 
+                            expedita error! <br>
+                            <a class="btn" href="cinventory.html"><button>Read More</button></a>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="responsive">
+                <div class="gallery">
+                    <img src="images/bmw.jpg" alt="B.M.W" width="600" height="400">
+                    <div class="desc">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                            A necessitatibus sint vitae, suscipit officiis esse  
+                            veniam id quam eligendi ipsam culpa enim cupiditate 
+                            expedita error! <br>
+                            <a class="btn" href="inventory.html"><button>Read More</button></a>
+                    </div>
+                </div>
+                </div>
+                
+                <div class="clearfix"></div> 
+        </div>
+    <div class="footer">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h1 class="logo-text"><span>faddai</span>Motors</h1>
+                    <p>
+                        faddaiMotors is an Accra based dealership with both new and used cars that gives its
+                        customers unmatched service with a knowledgeable staff.
+                    </p>
+                    <div class="contacts">
+                        <span><i class="fas fa-phone"></i>&nbsp; 024-200-2602</span>
+                        <span><i class="fas fa-envelope"></i>&nbsp; info@faddaiMotors.com</span>
+                        <div class="social">
+                            <a href="#"><i class="fab fa-facebook"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-section links">
+                    <h2>Quick Links</h2>
+                    <br>
+                    <ul>
+                        <a href="#"><li>Home</li></a>
+                        <a href="inventory.html"><li>Inventory</li></a>
+                        <a href="autoparts.html"><li>Autoparts & Supports</li></a>
+                        <a href="#"><li>Terms</li></a>
+                        <a href="#"><li>Hours</li></a>
+                    </ul>
+                </div>
+                <div class="footer-section contact-form">
+                    <h2>Contact Us</h2>
+                    <br>
+                    <form action="index.html" method="post">
+                        <input type="email" name="email" class="text-input contact-input" placeholder="Your email address!">
+                        <textarea rows="2" name="message" class="text-input contact-input" placeholder="Your message......"></textarea>
+                        <button type="submit" class="btn btn-big contact-btn">
+                            <i class="fas fa-envelope"></i>
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                copyright &copy;, 2019 faddaiMotors. || All right reserved.
+            </div>
+        </div> 
+        <marquee class="logo-text"><span>faddai</span>Motors, thanks for your time❤️.........</marquee>
+<script>
+        var myIndex = 0;
+        carousel();
+        
+        function carousel() {
+          var i;
+          var x = document.getElementsByClassName("mySlides");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";  
+          }
+          myIndex++;
+          if (myIndex > x.length) {myIndex = 1}    
+          x[myIndex-1].style.display = "block";  
+          setTimeout(carousel, 3000); // Change image every 2 seconds
+        }
+        </script>
+</body>
+</html>
