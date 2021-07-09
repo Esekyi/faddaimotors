@@ -1,26 +1,22 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="icon" href="/templates/images/icon.png">
-    <title>faddaiMotors</title>
-    <link rel="stylesheet" href="/templates/styleSheet.css">
-    <link rel="stylesheet" href="templates/all.min.css">
-</head>
-<body>
-    <header >
+{% extends 'base.html' %}
+
+{% block head %}
+<title>faddaiMotors - Contact Us</title> 
+{% endblock %}
+
+{% block body %}
+
+    <header>
         <div class="Navigation">
-        <h1 class="logo-text"><span>faddai</span>Motors</h1>
-        <nav>
-            <ul class="nav_links">
-                <li><a href="/templates/home.html">HOME</a></li>
-                <li><a href="/templates/Inventory.html">INVENTORY</a></li>
-                <li><a href="/templates/Autoparts.html">AUTO PARTS</a></li>
-            </ul>
-        </nav>
-        <a class="cta" href="#"><button>contact</button></a>
-        </div>
+            <h1 class="logo-text"><span>faddai</span>Motors</h1>
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="/">HOME</a></li>
+                    <li><a href="{{url_for('inventory')}}">INVENTORY</a></li>
+                    <li><a href="{{url_for('Autoparts')}}">AUTO PARTS</a></li>
+                </ul>
+            </nav>
+            <a class="cta" href="{{url_for('contact')}}"><button>contact</button></a>
+            </div>
     </header>
-</body>
-</html>
+{% endblock %}
