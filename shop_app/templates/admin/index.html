@@ -1,0 +1,58 @@
+{% extends 'base2.html' %}
+
+{% block body %}
+{% include '_messages.html' %}
+
+    <!-- Navbar content -->
+<div class="container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Admin</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>              
+              <a class="nav-link" href="/addNewbrand">Add Brand</a>
+              <a class="nav-link" href="/brands">Brands</a>              
+              <a class="nav-link" href="/addcategory">Add Category</a>
+              <a class="nav-link" href="/category">categories</a>
+              <a class="nav-link" href="/additem">Add item</a>
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+</div>
+
+<div class="container mt-5">
+    <table class="table table-sm table-condensed table-striped table-hover">
+        <thead>
+            <th>Sr</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Brand</th>
+            <th>Image</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{item.name}}</td>
+                <td>${{item.price}}</td>
+                <td>{{item.discount}} %</td>
+                <td>{{item.brand.name}}</td>
+                <td><img src="{{ url_for('static', filename='images/' + item.image_1)}}" alt="" width="50" height="40"></td>
+                <td> <a href="{{ url_for('updateitem', id=item.id)}}" class="btn btn-sm btn-outline-info">Update</a></td>
+                <td> <a href="{{ url_for('updateitem', id=item.id)}}" class="btn btn-sm btn-outline-danger">Remove</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
