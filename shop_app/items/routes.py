@@ -1,7 +1,7 @@
 from flask import redirect, render_template, url_for, flash, request, session, current_app
 from shop_app import db, app, photos
-from .models import Brand, Category, Additem
-from .forms import Additems
+from .models import Brand, Category, VehiclePart
+from .forms import VehicleParts
 import secrets, os
 
 
@@ -98,14 +98,14 @@ def deletecategory(id):
 
 
 
-@app.route('/additem', methods = ['POST', 'GET'])
-def additem():
+@app.route('/VehiclePart', methods = ['POST', 'GET'])
+def VehiclePart():
     if 'email' not in session:
         flash('Please proceed to login page', 'danger')
         return redirect(url_for('login'))
     brands = Brand.query.all()
     categories = Category.query.all()
-    form = Additems(request.form)
+    form = VehicleParts(request.form)
     if request.method == "POST":
         name = form.name.data
         price = form.price.data
@@ -118,23 +118,23 @@ def additem():
         image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10) + ".")
         image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10) + ".")
         image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10) + ".")
-        additem = Additem(name=name, price=price, discount=discount, stock=stock, colors=colors,description=description,
+        VehiclePart = VehiclePart(name=name, price=price, discount=discount, stock=stock, colors=colors,description=description,
          brand_id=brand, category_id=category, image_1=image_1, image_2=image_2, image_3=image_3)
-        db.session.add(additem)
+        db.session.add(VehiclePart)
         flash(f'The item {name} has been added succesfully', 'success')
         db.session.commit()
-        return redirect(url_for('additem'))
-    return render_template('items/additem.html', form=form, brands=brands, categories=categories, title = 'Add an item')
+        return redirect(url_for('VehiclePart'))
+    return render_template('items/VehiclePart.html', form=form, brands=brands, categories=categories, title = 'Add an item')
 
 
 @app.route('/updateitem/<int:id>', methods =['GET','POST'])
 def updateitem(id):
     brands = Brand.query.all()
     categories = Category.query.all()
-    item = Additem.query.get_or_404(id)
+    item = VehiclePart.query.get_or_404(id)
     brand = request.form.get('brand')
     category = request.form.get('category')
-    form = Additems(request.form)
+    form = VehicleParts(request.form)
     if request.method == "POST":
         item.name = form.name.data
         item.price = form.price.data

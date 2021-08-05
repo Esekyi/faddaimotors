@@ -1,12 +1,12 @@
 from wtforms import form
-from shop_app.items.forms import Additems
+from shop_app.items.forms import VehicleParts
 from flask import Flask, render_template, session, request, flash, url_for, redirect
 
 
 from shop_app import app, bcrypt, db, items
 from .models import User
 from .forms import RegistrationForm, LoginForm
-from shop_app.items.models import  Additem, Brand, Category
+from shop_app.items.models import  VehiclePart, Brand, Category
 
 
 #app = Flask(__name__) 
@@ -17,7 +17,7 @@ def admin():
     if 'email' not in session:
         flash('Please proceed to login page', 'danger')
         return redirect(url_for('login'))
-    items = Additem.query.all()
+    items = VehiclePart.query.all()
     return render_template('admin/index.html', items=items, title = 'Admin')
 
 @app.route('/brands')

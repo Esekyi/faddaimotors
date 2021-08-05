@@ -3,7 +3,7 @@ from wtforms import IntegerField, StringField, BooleanField,DecimalField, TextAr
 from wtforms.form import Form
 from wtforms.validators import InputRequired
 
-class Additems(Form):
+class VehicleParts(Form):
     name = StringField('Name', [InputRequired()])
     price = DecimalField('Price', [InputRequired()])
     discount = IntegerField('Discount', default = 0)

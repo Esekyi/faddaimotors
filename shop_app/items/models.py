@@ -2,7 +2,7 @@ from shop_app import db
 from datetime import datetime
 
 
-class Additem(db.Model):
+class VehiclePart(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     price = db.Column(db.Numeric(10,2), nullable = False)
@@ -23,7 +23,7 @@ class Additem(db.Model):
     image_3 = db.Column(db.String(150), nullable=False, default='image3.jpg')
 
     def __repr__(self):
-        return '<Additem %r>' % self.name
+        return '<VehiclePart %r>' % self.name
 
 
 class Brand(db.Model):
