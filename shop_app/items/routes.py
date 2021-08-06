@@ -98,8 +98,8 @@ def deletecategory(id):
 
 
 
-@app.route('/VehiclePart', methods = ['POST', 'GET'])
-def VehiclePart():
+@app.route('/vehiclePart', methods = ['POST', 'GET'])
+def vehiclePart():
     if 'email' not in session:
         flash('Please proceed to login page', 'danger')
         return redirect(url_for('login'))
@@ -118,13 +118,13 @@ def VehiclePart():
         image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10) + ".")
         image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10) + ".")
         image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10) + ".")
-        VehiclePart = VehiclePart(name=name, price=price, discount=discount, stock=stock, colors=colors,description=description,
+        vehiclePart = VehiclePart(name=name, price=price, discount=discount, stock=stock, colors=colors,description=description,
          brand_id=brand, category_id=category, image_1=image_1, image_2=image_2, image_3=image_3)
-        db.session.add(VehiclePart)
+        db.session.add(vehiclePart)
         flash(f'The item {name} has been added succesfully', 'success')
         db.session.commit()
-        return redirect(url_for('VehiclePart'))
-    return render_template('items/VehiclePart.html', form=form, brands=brands, categories=categories, title = 'Add an item')
+        return redirect(url_for('vehiclePart'))
+    return render_template('items/additem.html', form=form, brands=brands, categories=categories, title = 'Add an item')
 
 
 @app.route('/updateitem/<int:id>', methods =['GET','POST'])
