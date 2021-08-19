@@ -1,7 +1,8 @@
+from shop_app.admin.routes import category
 from flask import redirect, render_template, url_for, flash, request, session, current_app
 from shop_app import db, app, photos
-from .models import Brand, Category, VehiclePart
-from .forms import VehicleParts
+from .models import Brand, Category, AddVehiclePart
+from .forms import AddVehicleParts
 import secrets, os
 
 
@@ -9,7 +10,31 @@ import secrets, os
 
 @app.route('/')
 def home():
-    return " "
+    page = request.args.get('page', 1, type=int)
+    items = AddVehiclePart.query.filter(AddVehiclePart.stock > 0).order_by(AddVehiclePart.id.desc()).paginate(page=page, per_page=2)
+    brands = Brand.query.join(AddVehiclePart, (Brand.id==AddVehiclePart.brand_id)).all()
+    categorys = Category.query.join(AddVehiclePart, (Category.id==AddVehiclePart.category_id)).all()
+    return render_template('items/home.html', items = items, brands=brands, categorys=categorys, title = 'faddaiMotors - Home')
+
+@app.route('/brand/<int:id>')
+def get_brand(id):
+    get_brand = Brand.query.filter_by(id=id).first_or_404()
+    page = request.args.get('page', 1, type=int)
+    brand = AddVehiclePart.query.filter_by(brand=get_brand).paginate(page=page, per_page=2)
+    brands = Brand.query.join(AddVehiclePart, (Brand.id==AddVehiclePart.brand_id)).all()
+    categorys = Category.query.join(AddVehiclePart, (Category.id==AddVehiclePart.category_id)).all()
+    return render_template('items/home.html', brand=brand, brands=brands, categorys=categorys, get_brand=get_brand)
+
+
+@app.route('/category/<int:id>')
+def get_category(id):
+    page = request.args.get('page', 1, type=int)
+    get_category = Category.query.filter_by(id=id).first_or_404()
+    get_category_item = AddVehiclePart.query.filter_by(category_id=id).paginate(page=page, per_page=4)
+    categorys = Category.query.join(AddVehiclePart, (Category.id==AddVehiclePart.category_id)).all()
+    brands = Brand.query.join(AddVehiclePart, (Brand.id==AddVehiclePart.brand_id)).all()
+    return render_template('items/home.html', get_category_item=get_category_item, categorys=categorys, brands=brands, get_category=get_category)
+
 
 @app.route('/addNewbrand', methods=['GET','POST'])
 def addNewbrand():
@@ -24,7 +49,7 @@ def addNewbrand():
         db.session.commit()
         return redirect(url_for('addNewbrand'))
 
-    return render_template('items/addNewbrand.html', brands = 'brands', title = 'Add brand')
+    return render_template('items/addNewbrand.html', brands = 'brands', title = 'faddaiMotors - Add brand')
 
 @app.route('/updatebrand/<int:id>', methods=['GET', 'POST'])
 def updatebrand(id):
@@ -68,7 +93,7 @@ def addcategory():
         db.session.commit()
         return redirect(url_for('addcategory'))
 
-    return render_template('items/addNewbrand.html', title = 'Add category')
+    return render_template('items/addNewbrand.html', title = 'faddaiMotors - Add category')
 
 @app.route('/updatecategory/<int:id>', methods=['GET', 'POST'])
 def updatecategory(id):
@@ -105,7 +130,7 @@ def vehiclePart():
         return redirect(url_for('login'))
     brands = Brand.query.all()
     categories = Category.query.all()
-    form = VehicleParts(request.form)
+    form = AddVehicleParts(request.form)
     if request.method == "POST":
         name = form.name.data
         price = form.price.data
@@ -118,23 +143,23 @@ def vehiclePart():
         image_1 = photos.save(request.files.get('image_1'), name=secrets.token_hex(10) + ".")
         image_2 = photos.save(request.files.get('image_2'), name=secrets.token_hex(10) + ".")
         image_3 = photos.save(request.files.get('image_3'), name=secrets.token_hex(10) + ".")
-        vehiclePart = VehiclePart(name=name, price=price, discount=discount, stock=stock, colors=colors,description=description,
+        vehiclePart = AddVehiclePart(name=name, price=price, discount=discount, stock=stock, colors=colors,description=description,
          brand_id=brand, category_id=category, image_1=image_1, image_2=image_2, image_3=image_3)
         db.session.add(vehiclePart)
         flash(f'The item {name} has been added succesfully', 'success')
         db.session.commit()
         return redirect(url_for('vehiclePart'))
-    return render_template('items/additem.html', form=form, brands=brands, categories=categories, title = 'Add an item')
+    return render_template('items/additem.html', form=form, brands=brands, categories=categories, title = 'faddaiMotors - Add an item')
 
 
 @app.route('/updateitem/<int:id>', methods =['GET','POST'])
 def updateitem(id):
     brands = Brand.query.all()
     categories = Category.query.all()
-    item = VehiclePart.query.get_or_404(id)
+    item = AddVehiclePart.query.get_or_404(id)
     brand = request.form.get('brand')
     category = request.form.get('category')
-    form = VehicleParts(request.form)
+    form = AddVehicleParts(request.form)
     if request.method == "POST":
         item.name = form.name.data
         item.price = form.price.data
@@ -174,3 +199,23 @@ def updateitem(id):
     form.discount.data = item.discount
     form.colors.data = item.colors
     return render_template('items/updateitem.html', form=form, categories=categories, brands=brands, item=item)
+
+
+@app.route('/deleteitem/<int:id>', methods = ['POST'])
+def deleteitem(id):
+
+    item = AddVehiclePart.query.get_or_404(id)
+    if request.method == "POST":
+        if request.files.get('image_1'):
+            try:
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + item.image_1))
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + item.image_2))
+                os.unlink(os.path.join(current_app.root_path, "static/images/" + item.image_3))
+            except Exception as messagee:
+                print(messagee)
+        db.session.delete(item)
+        db.session.commit()
+        flash(f'The item has been deleted successfully', 'success')      
+        return redirect(url_for('admin'))
+    flash(f'sorry, this item cannot be deleted', 'danger')
+    return redirect(url_for('admin'))

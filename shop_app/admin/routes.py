@@ -1,12 +1,12 @@
 from wtforms import form
-from shop_app.items.forms import VehicleParts
+from shop_app.items.forms import AddVehicleParts
 from flask import Flask, render_template, session, request, flash, url_for, redirect
 
 
 from shop_app import app, bcrypt, db, items
 from .models import User
 from .forms import RegistrationForm, LoginForm
-from shop_app.items.models import  VehiclePart, Brand, Category
+from shop_app.items.models import  AddVehiclePart, Brand, Category
 
 
 #app = Flask(__name__) 
@@ -17,7 +17,7 @@ def admin():
     if 'email' not in session:
         flash('Please proceed to login page', 'danger')
         return redirect(url_for('login'))
-    items = VehiclePart.query.all()
+    items = AddVehiclePart.query.all()
     return render_template('admin/index.html', items=items, title = 'Admin')
 
 @app.route('/brands')
@@ -26,7 +26,7 @@ def brands():
         flash('Please proceed to login page', 'danger')
         return redirect(url_for('login'))
     brands = Brand.query.order_by(Brand.id.desc()).all()
-    return render_template('admin/brand.html', title ='Brand', brands=brands)
+    return render_template('admin/brand.html', title ='Brands', brands=brands)
 
 
 @app.route('/category')
@@ -61,7 +61,7 @@ def login():
             flash(f"Welcome Back {form.email.data}, you're logged in", 'success')
             return redirect(request.args.get('next') or url_for('admin'))
         else:
-            flash('Sorry, wrong password or email, try again', 'danger')
+            flash('Sorry, Incorect email or password, try again', 'danger')
     return render_template('admin/login.html', form = form, title = 'faddaiMotors - Login')
 
 
