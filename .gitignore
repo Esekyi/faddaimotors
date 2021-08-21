@@ -1,3 +1,4 @@
 .DS_Store
 Virtual
 __pycache__
+__init__.pyc
