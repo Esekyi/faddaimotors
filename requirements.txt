@@ -4,12 +4,14 @@ distlib==0.3.2
 filelock==3.0.12
 Flask==2.0.1
 Flask-WTF==0.15.1
+greenlet==1.1.1
 gunicorn==20.1.0
 itsdangerous==2.0.1
 Jinja2==3.0.1
 MarkupSafe==2.0.1
 pycryptodome==3.10.1
 six==1.16.0
+SQLAlchemy==1.4.23
 virtualenv==20.4.7
 Werkzeug==2.0.1
 WTForms==2.3.3
