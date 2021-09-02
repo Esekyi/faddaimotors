@@ -5,22 +5,31 @@ from .models import Brand, Category, AddVehiclePart
 from .forms import AddVehicleParts
 import secrets, os
 
-
+@app.template_filter()
+def numberFormat(value):
+    return format(int(value), ',d')
 
 
 @app.route('/')
 def home():
     page = request.args.get('page', 1, type=int)
-    items = AddVehiclePart.query.filter(AddVehiclePart.stock > 0).order_by(AddVehiclePart.id.desc()).paginate(page=page, per_page=2)
+    items = AddVehiclePart.query.filter(AddVehiclePart.stock > 0).order_by(AddVehiclePart.id.desc()).paginate(page=page, per_page=8)
     brands = Brand.query.join(AddVehiclePart, (Brand.id==AddVehiclePart.brand_id)).all()
     categorys = Category.query.join(AddVehiclePart, (Category.id==AddVehiclePart.category_id)).all()
     return render_template('items/home.html', items = items, brands=brands, categorys=categorys, title = 'faddaiMotors - Home')
+
+@app.route('/item/<int:id>')
+def view_single_page(id):
+    item = AddVehiclePart.query.get_or_404(id)
+    brands = Brand.query.join(AddVehiclePart, (Brand.id==AddVehiclePart.brand_id)).all()
+    categorys = Category.query.join(AddVehiclePart, (Category.id==AddVehiclePart.category_id)).all()
+    return render_template('items/view_single_page.html', item=item, brands=brands, categorys=categorys, title = 'faddaiMotors - View')
 
 @app.route('/brand/<int:id>')
 def get_brand(id):
     get_brand = Brand.query.filter_by(id=id).first_or_404()
     page = request.args.get('page', 1, type=int)
-    brand = AddVehiclePart.query.filter_by(brand=get_brand).paginate(page=page, per_page=2)
+    brand = AddVehiclePart.query.filter_by(brand=get_brand).paginate(page=page, per_page=4)
     brands = Brand.query.join(AddVehiclePart, (Brand.id==AddVehiclePart.brand_id)).all()
     categorys = Category.query.join(AddVehiclePart, (Category.id==AddVehiclePart.category_id)).all()
     return render_template('items/home.html', brand=brand, brands=brands, categorys=categorys, get_brand=get_brand)

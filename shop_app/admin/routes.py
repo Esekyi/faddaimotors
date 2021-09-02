@@ -12,6 +12,11 @@ from shop_app.items.models import  AddVehiclePart, Brand, Category
 #app = Flask(__name__) 
 
 
+@app.template_filter()
+def numberFormat(value):
+    return format(int(value), ',d')
+
+
 @app.route('/admin')
 def admin():
     if 'email' not in session:
@@ -61,7 +66,7 @@ def login():
             flash(f"Welcome Back {form.email.data}, you're logged in", 'success')
             return redirect(request.args.get('next') or url_for('admin'))
         else:
-            flash('Sorry, Incorect email or password, try again', 'danger')
+            flash('Incorect email or password, try again', 'danger')
     return render_template('admin/login.html', form = form, title = 'faddaiMotors - Login')
 
 

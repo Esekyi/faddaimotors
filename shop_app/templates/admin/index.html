@@ -1,4 +1,4 @@
-{% extends 'base2.html' %}
+{% extends 'base.html' %}
 
 {% block body %}
 {% include '_messages.html' %}
@@ -42,7 +42,7 @@
             <tr>
                 <td>{{loop.index}}</td>
                 <td>{{item.name}}</td>
-                <td>${{item.price}}</td>
+                <td><sup>$</sup>{{item.price | numberFormat}}</td>
                 <td>{{item.discount}} %</td>
                 <td>{{item.brand.name}}</td>
                 <td><img src="{{ url_for('static', filename='images/' + item.image_1)}}" alt="" width="50" height="40"></td>

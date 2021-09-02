@@ -19,3 +19,4 @@ bcrypt = Bcrypt(app)
 
 from shop_app.admin import routes
 from shop_app.items import routes
+from shop_app.Bag import Bag
