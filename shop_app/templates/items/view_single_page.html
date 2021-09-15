@@ -51,7 +51,7 @@ body {
 
   <!-- Navbar starts -->
 
-<nav class="navbar navbar-dark bg-dark navbar navbar-expand-lg sticky-top navbarMain">
+<nav class="navbar navbar-dark bg-dark navbar navbar-expand-lg navbarMain">
   <div class="container-fluid" style="padding-top: 1rem;" >     
     <a class="navbar-brand text-info" href="#">
       faddai<span class="text-white">Motors</span>
@@ -68,7 +68,7 @@ body {
         <li class="nav-item">
           <a class="nav-link" href="/"><i class="fas fa-car"></i>&nbsp;Vehicles and Parts</a>
         </li>
-
+<!-- Exclude BRands and Category 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-crutch"></i>&nbsp;Brands
@@ -90,6 +90,7 @@ body {
             {% endfor %}
           </ul>
         </li>
+-->
 
         <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1"><i class="fas fa-shopping-bag"></i>&nbsp; Bag ({{session['ShoppingBag'] | length}})</a>
@@ -104,7 +105,22 @@ body {
   </div>
 </nav>
 
-<!-- Navbar ends -->
+ <!-- Navbar ends -->
+ <nav id="navbar_top" class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top navbarMain">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <img src="{{url_for('static', filename='images/' + item.image_1)}}" class="bd-placeholder-img rounded-circle me-3" height="70" width="70" alt="{{item.name}}">
+      </div>
+    </div>
+        
+    <h3 class="navbar-nav" style="color: #fff;">{{item.name}}</h3>
+    <div class="navbar-nav ms-auto" style="color: #fff;">
+      <h3 class="nav-item">${{item.price | numberFormat}}</h3>
+    </div>
+ 
+  </div> <!-- navbar-collapse.// -->
+ </nav>
 
 <div class="container mt-5">
     <div class="row featurette">
@@ -152,6 +168,9 @@ body {
     </div>
 
 </div>
+
+
+
 
 <script>
     var first_image = document.getElementById('first_image');
