@@ -23,8 +23,12 @@ def AddtoBag():
         colors = request.form.get('colors')
         vehiclePart = AddVehiclePart.query.filter_by(id=item_id).first()
         if item_id and colors and quantity and request.method == "POST":
-            DictVehicleParts = {item_id:{'name': vehiclePart.name, 'price': vehiclePart.price, 'discount': vehiclePart.discount, 'color': colors, 'quantity': quantity, 
-            'image': vehiclePart.image_1}}
+            DictVehicleParts = {
+                item_id: {'name': vehiclePart.name, 'price': vehiclePart.price, 
+                'discount': vehiclePart.discount, 'color': colors, 
+                'quantity': quantity, 'image': vehiclePart.image_1
+                }
+            }
 
             if 'ShoppingBag' in session:
                 print(session['ShoppingBag'])
