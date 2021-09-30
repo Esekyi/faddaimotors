@@ -10,7 +10,7 @@
 
 body {
   font: 400 16px/1.5 'Roboto',"Helvetica Neue",Helvetica,Arial,sans-serif;
-  background-color: #fff style="object-fit: cover;";
+  /* background-color: rgb(231, 231, 231); */
   color: #5a5a5a;
 
 }
@@ -28,6 +28,16 @@ body {
   line-height: 1;
   /* rtl:remove */
   letter-spacing: -.05rem;
+}
+
+.vehicle-card:hover{
+  box-shadow: 0 0 20px 5px #aaa;
+  transition: all .3s ease-out;
+}
+
+.vehicle-card, .vehicle-card > *{
+  text-decoration: none;
+  color: #5a5a5a;
 }
 
 
@@ -164,7 +174,7 @@ body {
                     <p class="text-danger"><small>{{category.discount}}% Discount</small></p>
                     {% endif %}
                 </div>
-                <div class="card-footer">
+                <div class="card-footer d-flex justify-content-between">
                     <a href="{{url_for('view_single_page', id=category.id)}}" class="float-left btn btn-sm btn-outline-success">View</a>
                     <form action="{{url_for('AddtoBag')}}" method="post">
                       <input type="hidden" name="item_id" value="{{category.id}}">
@@ -213,35 +223,17 @@ body {
       {% else %}
       {% for item in items.items %}
           <div class="col-md-3 mt-3">
-              <div class="card h-100">
+              <a href="{{url_for('view_single_page', id=item.id)}}" class="card h-100 vehicle-card">
                       <img style="object-fit: cover;" src="{{url_for('static', filename='images/' + item.image_1)}}" class="card-img-top" alt="{{item.name}}" height="200">
                   <div class="card-body">
                       <h5 class="card-title text-center">{{item.name}}</h5>
 
                       <p class="card-text text-center">Price: ${{item.price | numberFormat}}</p>
                       {% if item.discount > 0 %}
-                      <p class="text-danger"><small>{{item.discount}}% Discount</small></p>
+                      <p class="text-danger text-center"><small>{{item.discount}}% Discount</small></p>
                       {% endif %}
                   </div>
-                  <div class="card-footer">
-                      <a href="{{url_for('view_single_page', id=item.id)}}" class="float-left btn btn-sm btn-outline-success">View</a>
-                      <form action="{{url_for('AddtoBag')}}" method="post">
-                        <input type="hidden" name="item_id" value="{{item.id}}">
-                        <button type="submit" class="float-right btn btn-sm btn-outline-info">Add to Bag</button>
-                        
-                        <input type="hidden" name="quantity" id="" value="1" min="1" max="{{item.stock}}">
-                        {% set colors = item.colors.split(',') %}
-                            
-                            <select name="colors" id="colors" style="visibility: hidden;">
-                                {% for color in colors %}
-                                    {% set col = color.split(':') %}
-                                        <option value="{{col[0]}}">{{col[0] | capitalize}}</option>
-                                {% endfor %}
-                            </select>
-                    </form>
-        
-                  </div>
-              </div>
+                </a>
           </div>
       {% endfor %}
   </div>

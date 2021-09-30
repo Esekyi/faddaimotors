@@ -121,7 +121,7 @@ body {
 <div class="container mt-5">
     <div class="row featurette">
         <div class="col-md-5 order-md-1" id="first_image">
-            <img src="{{url_for('static', filename='images/' + item.image_1)}}" alt="{{item.name}}" width="500" height="500">
+            <img src="{{url_for('static', filename='images/' + item.image_1)}}" alt="{{item.name}}" width="500">
 
         </div>
         <div class="col-md-7 order-md-2">
@@ -178,7 +178,7 @@ body {
 
     function full_image(){
         var ImageSRC = this.getAttribute('src');
-        first_image.innerHTML = "<img src =" + ImageSRC + " width='500' height='500' >";
+        first_image.innerHTML = "<img src =" + ImageSRC + " width='500'>";
     }
 </script>
 
