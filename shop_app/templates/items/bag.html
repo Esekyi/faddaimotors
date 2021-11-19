@@ -1,0 +1,49 @@
+{% extends 'base2.html'%}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <table class="table table-sm">
+            <thead>
+                <th>Sr</th>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Color</th>
+                <th>Unit Price</th>
+                <th>Discount</th>
+                <th>Total</th>
+                <th>Update Bag</th>
+                <th>Delete</th>
+            </thead>
+            <tbody>
+                {% for key, item in session['ShoppingBag'].items() %}
+                {% set discount = "%0.2f" |format((item.discount/100) * item.price|float)  %}
+                <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.quantity}}</td>
+                    <td>{{item.color}}</td>
+                    <td>${{item.price | numberFormat}}</td>
+                    {% if item.discount > 0%}
+                    <td>{{item.discount}}% </td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    {% set total = item.quantity|int * item.price|float %}
+                    <td>${{"%0.2f"|format((total|float) - discount|float)|numberFormatFloat}}</td>
+                    <td><a href="#">Edit</a></td>
+                    <td><a href="#">Delete</a></td>
+                    
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td> <a href="/">Continue shopping</a> </td>
+                    <td width="30%" ></td>
+                    <td colspan="3"><h5>Tax: ${{tax|numberFormatFloat}}</h5></td>
+                    <td colspan="5"><h5>Grand Total: ${{grandTotal|numberFormat}}</h5></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
