@@ -46,3 +46,18 @@ def AddtoBag():
         print(e)
     finally:
         return redirect(request.referrer)
+
+
+@app.route('/bagItems')
+def getBag():
+    if 'ShoppingBag' not in session:
+        return redirect(request.referrer)
+    total = 0
+    grandTotal = 0
+    for key, item in session['ShoppingBag'].items():
+        discount = (item['discount']/100) * float(item['price'])
+        total += float(item['price']) * int(item['quantity'])
+        total -= discount
+        tax = ("%.2f"% (.08 * float(total)))
+        grandTotal = float("%.2f" % (1.06 * total))
+    return render_template('items/bag.html', tax = tax, grandTotal = grandTotal)
