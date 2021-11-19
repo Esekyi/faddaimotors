@@ -9,11 +9,16 @@ import secrets, os
 def numberFormat(value):
     return format(int(value), ',d')
 
+@app.template_filter()
+def numberFormatFloat(value):
+    return format(float(value), ',')
+
+
 
 @app.route('/')
 def home():
     page = request.args.get('page', 1, type=int)
-    items = AddVehiclePart.query.filter(AddVehiclePart.stock > 0).order_by(AddVehiclePart.id.desc()).paginate(page=page, per_page=8)
+    items = AddVehiclePart.query.filter(AddVehiclePart.stock > 0).order_by(AddVehiclePart.id.desc()).paginate(page=page, per_page=12)
     brands = Brand.query.join(AddVehiclePart, (Brand.id==AddVehiclePart.brand_id)).all()
     categorys = Category.query.join(AddVehiclePart, (Category.id==AddVehiclePart.category_id)).all()
     return render_template('items/home.html', items = items, brands=brands, categorys=categorys, title = 'faddaiMotors - Home')
