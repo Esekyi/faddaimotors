@@ -26,7 +26,7 @@ def AddtoBag():
             DictVehicleParts = {
                 item_id: {'name': vehiclePart.name, 'price': vehiclePart.price, 
                 'discount': vehiclePart.discount, 'color': colors, 
-                'quantity': quantity, 'image': vehiclePart.image_1
+                          'quantity': quantity, 'image': vehiclePart.image_1, 'colors': vehiclePart.colors
                 }
             }
 
@@ -61,3 +61,12 @@ def getBag():
         tax = ("%.2f"% (.08 * float(total)))
         grandTotal = float("%.2f" % (1.06 * total))
     return render_template('items/bag.html', tax = tax, grandTotal = grandTotal)
+
+
+@app.route('/empty')
+def empty_bag():
+    try:
+        session.clear()
+        return redirect(url_for('home'))
+    except Exception as e:
+        print(e)
