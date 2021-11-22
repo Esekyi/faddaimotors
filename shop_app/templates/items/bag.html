@@ -7,7 +7,7 @@
     }
 
     .cart-container {
-        padding: 50px 0;
+        padding: 50px 5%;
     }
 
     .cart-heading {
@@ -16,12 +16,16 @@
 
     .cart-items-section {
         display: flex;
-        column-gap: 2%;
+        column-gap: 5%;
         margin-top: 50px;
+        flex-wrap: wrap;
+        align-items: flex-start;
     }
 
     .cart-items {
         flex: 1;
+        width: 100%;
+        margin-bottom: 20px;
     }
 
     .cart-items .header,
@@ -59,10 +63,26 @@
     }
 
     .discount-box {
-        /* min-width: 100%; */
-        /* max-width: 400px; */
-        width: 400px;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .discount-box > *{
         background-color: #eee;
+    }
+    .discount-box button:hover{
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #000;
+    }
+
+    .checkout-btn{
+        border: none;
+        background-color: #000;
+        color: #fff;
+        font-size: 14px;
+        text-transform: uppercase;
+        padding: 12px 0;
     }
 
     .qty-selector {
@@ -79,6 +99,33 @@
         cursor: pointer;
     }
 
+    .code-form{
+        display: flex;
+        padding: 20px;
+        column-gap: 10px;
+        border-radius: 0;
+    }
+
+    .code-form input{
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #777;
+    }
+    .code-form button{
+        border: none;
+        background-color: #000;
+        color: #fff;
+        flex: 0.4;
+        font-size: 13px;
+        text-transform: uppercase;
+    }
+    .edit-button{
+        margin-top: 5px; 
+        border: none; 
+        background-color: #fff; 
+        text-decoration: underline;
+    }
+
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -89,6 +136,37 @@
     /* Firefox */
     input[type=number] {
         -moz-appearance: textfield;
+    }
+    @media (max-width: 1143px){
+        .cart-items-section{
+            flex-direction: column;
+        }
+
+        .discount-box {
+            max-width: 100%; 
+            display: flex;
+            column-gap: 20px;
+        }
+
+        .discount-box > *{
+            flex: 1;
+        }
+    }
+    @media (max-width:768px){
+        .cart-heading h2{
+            display: none;
+        }
+    }
+
+    @media (max-width: 650px){
+        .discount-box {
+            max-width: 100%; 
+            flex-direction: column;
+        }
+
+        .discount-box > *{
+            flex: 1;
+        }
     }
 </style>
 <!-- <div class="container mt-4">
@@ -145,7 +223,8 @@
                         </div>
                         </div>
                         </div> -->
-                        <div class="container cart-container">
+                        <div class="cart-container">
+                            {% include '_messages.html' %}
                             <div class="cart-heading">
                                 <span style="flex: 1">
                                     <svg width="5" height="7" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none"
@@ -171,44 +250,78 @@
                                         <div class="content">
                                             <div class="item-row">
                                                 <div class="cell stretch" style="display: flex; column-gap: 20px; font-weight: 400;">
-                                                    <img width="120" style="object-fit: cover;" height="150"
+                                                    <img width="120" style="object-fit: cover; border:1px solid rgb(235, 230, 230);" height="150"
                                                         src="{{url_for('static', filename='images/'+item.image)}}" alt="{{item.name}}" />
                                                     <div>
                                                         <p class="name">{{item.name}}</p>
                                                         <span style="font-size: 12.5px;">Size: XL</span>
-                                                    </div>
-                                                </div>
-                                                <div class="cell">
-                                                    <div style="display: flex;">
-                                                        <div class="qty-selector">
-                                                            <div>-</div>
-                                                            <div style="padding: 8px 0;">
-                                                                <input style="max-width: 20px; text-align: center; border: none;" type="number"
-                                                                    min="1" value="{{1}}">
-                                                            </div>
-                                                            <div>+</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="cell">
-                                                    {% set total = item.quantity|int * item.price|float %}
-                                                    {% if item.discount > 0 %}
-                                                    <p style="text-decoration: line-through; margin: 0;">${{item.price | numberFormat}}</p>
-                                                    {%else%}
-                                                    <p></p>
-                                                    {%endif%}
-                                                    {% if item.discount > 0 %}
-                                                    <p style="font-size: 16px; font-weight: 500; color: #a00">${{"%0.2f"|format((total|float) -
-                                                        discount|float)|numberFormatFloat}}</p>
-                                                    {%else%}
-                                                    <p style="font-size: 16px; font-weight: 500; color: #a00">${{item.price | numberFormat}}</p>
-                                                    {% endif %}
-                                                </div>
+<form action="{{url_for('updatebag', code=key)}}" method="post">
+
+    {% set colors = item.colors.split(',') %}
+    <label for="colors">Colors:</label>
+    <select name="color" id="color">
+        <option value="{{item.color}}" style="display: none;">{{item.color | capitalize}}</option>
+        {% for color in colors %}
+        {% set col = color.split(':') %}
+        <option value="{{col[0]}}">{{col[0] | capitalize}}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+    <button type="submit" class="edit-button"><i class="fas fa-pencil-alt"
+            style="font-size: 10px;color:#777;padding-right: 3px;"></i>Edit</button>
+        </div>
+        </div>
+        <div class="cell">
+            <div style="display: flex;">
+                <div class="qty-selector">
+                <div><i class="fas fa-minus" style="font-size: smaller;color: #000;"></i></div>
+                <div style="padding: 8px 0;">
+                    <input style="max-width: 20px; text-align: center; border: none; color: #000;" type="number" min="1" value="{{1}}">
+                    </div>
+                <div><i class="fas fa-plus" style="font-size: smaller; color: #000;"></i></div>
+                </div>
+                </div>
+                </div>
+                <div class="cell">
+                    {% set total = item.quantity|int * item.price|float %}
+                    {% if item.discount > 0 %}
+                    <p style="text-decoration: line-through; margin: 0;">${{item.price | numberFormat}}</p>
+                    {%else%}
+                    <p></p>
+                    {%endif%}
+                    {% if item.discount > 0 %}
+                    <p style="font-size: 16px; font-weight: 500; color: #a00">${{"%0.2f"|format((total|float) -
+                        discount|float)|numberFormatFloat}}</p>
+                    {%else%}
+                    <p style="font-size: 16px; font-weight: 500; color: #a00">${{item.price | numberFormat}}</p>
+                    {% endif %}
+                </div>
+</form>
                                             </div>
                                         </div>
                                         {% endfor %}
                                     </div>
                                     <div class="discount-box">
+                                        <div style="margin-bottom: 2px;">
+                                            <form class="code-form">
+                                                <input placeholder="Discount code" style="font-size: 12px;" type="text">
+                                                <button>Apply</button>
+                                            </form>
+                                        </div>
+                                        <div class="bottom-part">
+                                            <div style="color: rgb(124, 42, 42); display: flex; align-items: center; justify-content: space-between; padding-inline: 20px; padding-top: 10px;"
+                                                class="subtotal">
+                                                <span>Tax</span>
+                                                <h6>${{tax|numberFormatFloat}}</h6>
+                                            </div>
+                                            <div style="color: #000; display: flex; align-items: center; justify-content: space-between; padding-inline: 20px;"
+                                                class="subtotal">
+                                                <span><b>Subtotal</b> ({{session['ShoppingBag'] | length}} items)</span>
+                                                <h5>${{grandTotal|numberFormat}}</h5>
+                                            </div>
+                                            <div style="padding: 20px;"><button class="checkout-btn" style=" width: 100%;">Checkout</button></div>
+                                        </div>
                                     </div>
     </div>
 </div>

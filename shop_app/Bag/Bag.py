@@ -58,7 +58,7 @@ def getBag():
         discount = (item['discount']/100) * float(item['price'])
         total += float(item['price']) * int(item['quantity'])
         total -= discount
-        tax = ("%.2f"% (.08 * float(total)))
+        tax = ("%.2f" % (.06 * float(total)))
         grandTotal = float("%.2f" % (1.06 * total))
     return render_template('items/bag.html', tax = tax, grandTotal = grandTotal)
 
@@ -70,3 +70,23 @@ def empty_bag():
         return redirect(url_for('home'))
     except Exception as e:
         print(e)
+
+
+@app.route('/updatebag/<int:code>', methods=['POST'])
+def updatebag(code):
+    if 'ShoppingBag' not in session and len(session['ShoppingBag']) <= 0:
+        return redirect(url_for('home'))
+    if request.method == "POST":
+        quantity = request.form.get('quantity')
+        color = request.form.get('color')
+        try:
+            session.modified = True
+            for key, item in session['ShoppingBag'].items():
+                if int(key) == code:
+                    item['quantity'] = quantity
+                    item['color'] = color
+                    flash('Item has been Updated!')
+                    return redirect(url_for('getBag'))
+        except Exception as e:
+            print(e)
+            return redirect(url_for('getBag'))
